@@ -11,8 +11,8 @@ WECHAT_CONTAIN_PAY_URL=""                                               # 微信
 WECHAT_CONTAIN_PAY_VERSION=""                                           # 微信SDK版本
 LOCAL_WECHAT_CONTAIN_PAY_ZIP="Wechat_pay.zip"                           # 微信SDK压缩包名字
 LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY="Wechat_pay"                   # 微信SDK解压缩之后，文件夹名字
-LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_FILE_NAME="WechatOpenSDK-Pay.podspec" # 微信SDK podspec文件名
-LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_NAME="WechatOpenSDK-Pay"              # 微信SDK podspec name
+LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_FILE_NAME="LXWechatOpenSDK_Pay.podspec" # 微信SDK podspec文件名
+LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_NAME="LXWechatOpenSDK_Pay"              # 微信SDK podspec name
 LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_MODULE_NAME="WechatOpenSDK"            # 微信SDK podspec module name
 LAST_LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_VERSION=""                        #本地podspec文件上次的版本号
 
@@ -20,8 +20,8 @@ WECHAT_NOT_CONTAIN_PAY_URL=""                                                # �
 WECHAT_NOT_CONTAIN_PAY_VERSION=""                                            # 微信SDK版本
 LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP="Wechat_no_pay.zip"                         # 微信SDK压缩包名字
 LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY="Wechat_no_pay"                 # 微信SDK解压缩之后，文件夹名字
-LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_FILE_NAME="WechatOpenSDK-NoPay.podspec" # 微信SDK podspec文件名
-LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_NAME="WechatOpenSDK-NoPay"              # 微信SDK podspec name
+LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_FILE_NAME="LXWechatOpenSDK_NoPay.podspec" # 微信SDK podspec文件名
+LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_NAME="LXWechatOpenSDK_NoPay"              # 微信SDK podspec name
 LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_MODULE_NAME="WechatOpenSDK"             # 微信SDK podspec module name
 LAST_LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_VERSION=""                         #本地podspec文件上次的版本号
 

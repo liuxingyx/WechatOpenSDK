@@ -31,23 +31,23 @@
 
 #### 包含支付功能
 ```
-pod 'WechatOpenSDK-Full'
+pod 'LXWechatOpenSDK_Pay'
 ```
 
 或者指定git源
 ```
-pod 'WechatOpenSDK-Full', :git => "https://github.com/liujunliuhong/WechatOpenSDK.git"
+pod 'LXWechatOpenSDK_Pay', :git => "https://github.com/liuxingyx/WechatOpenSDK.git"
 
 ```
 
 #### 不包含支付功能
 ```
-pod 'WechatOpenSDK-NoPay'
+pod 'LXWechatOpenSDK_NoPay'
 ```
 
 或者指定git源
 ```
-pod 'WechatOpenSDK-NoPay', :git => "https://github.com/liujunliuhong/WechatOpenSDK.git"
+pod 'LXWechatOpenSDK_NoPay', :git => "https://github.com/liuxingyx/WechatOpenSDK.git"
 ```
 
 ## 使用
