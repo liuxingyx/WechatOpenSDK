@@ -9,6 +9,7 @@ LOCAL_WECHAT_DOWNLOAD_HTML_FILE="WechatDownload.html"
 
 WECHAT_CONTAIN_PAY_URL=""                                               # 微信SDK url
 WECHAT_CONTAIN_PAY_VERSION=""                                           # 微信SDK版本
+WECHAT_CONTAIN_PAY_NAME=""                                               # 微信SDK name
 LOCAL_WECHAT_CONTAIN_PAY_ZIP="Wechat_pay.zip"                           # 微信SDK压缩包名字
 LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY="Wechat_pay"                   # 微信SDK解压缩之后，文件夹名字
 LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_FILE_NAME="LXWechatOpenSDK_Pay.podspec" # 微信SDK podspec文件名
@@ -18,6 +19,7 @@ LAST_LOCAL_WECHAT_CONTAIN_PAY_PODSPEC_VERSION=""                        #本地p
 
 WECHAT_NOT_CONTAIN_PAY_URL=""                                                # 微信SDK url
 WECHAT_NOT_CONTAIN_PAY_VERSION=""                                            # 微信SDK版本
+WECHAT_NOT_CONTAIN_PAY_NAME=""                                               # 微信SDK name
 LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP="Wechat_no_pay.zip"                         # 微信SDK压缩包名字
 LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY="Wechat_no_pay"                 # 微信SDK解压缩之后，文件夹名字
 LOCAL_WECHAT_NOT_CONTAIN_PAY_PODSPEC_FILE_NAME="LXWechatOpenSDK_NoPay.podspec" # 微信SDK podspec文件名
@@ -61,6 +63,12 @@ function getWechatProperties() {
         url1="${url1%\"*}" # 从右向左截取第一个["]前的字符串
         echo "包含支付功能的url：${url1}"
         WECHAT_CONTAIN_PAY_URL=${url1}
+        payzip="${url1#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
+        echo "包含支付功能的zip：${payzip}"
+        LOCAL_WECHAT_CONTAIN_PAY_ZIP=${payzip}
+        payzip="${payzip%.*}" # 从右向左截取第一个[.]前的字符串
+        echo "包含支付功能的name：${payzip}"
+        WECHAT_CONTAIN_PAY_NAME=${payzip}
 
         pattern2="2. iOS开发工具包<a href=\"[^<]*\">iOS.*，不包含支付功能"
         url2=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern2}")
@@ -68,6 +76,12 @@ function getWechatProperties() {
         url2="${url2%\"*}" # 从右向左截取第一个["]前的字符串
         echo "不包含支付功能的url：${url2}"
         WECHAT_NOT_CONTAIN_PAY_URL=${url2}
+        nopayzip="${url2#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
+        echo "包含支付功能的zip：${nopayzip}"
+        LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP=${nopayzip}
+        nopayzip="${nopayzip%.*}" # 从右向左截取第一个[.]前的字符串
+        echo "包含支付功能的name：${nopayzip}"
+        WECHAT_NOT_CONTAIN_PAY_NAME=${nopayzip}
 
         pattern3="iOS开发工具包</a>（[^<]*版本，包含支付功能）"
         version1=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern3}")
@@ -115,10 +129,18 @@ curl "${WECHAT_CONTAIN_PAY_URL}" -o ${LOCAL_WECHAT_CONTAIN_PAY_ZIP}
 curl "${WECHAT_NOT_CONTAIN_PAY_URL}" -o ${LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP}
 
 # 解压缩zip
-unzip ${LOCAL_WECHAT_CONTAIN_PAY_ZIP} -d ${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}
-unzip ${LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP} -d ${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}
+unzip ${LOCAL_WECHAT_CONTAIN_PAY_ZIP} -x __MACOSX/*
+unzip ${LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP} -x __MACOSX/*
 
-# 创建空文件夹
+# 改文件夹名
+mv ${WECHAT_CONTAIN_PAY_NAME} ${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}
+mv ${WECHAT_NOT_CONTAIN_PAY_NAME} ${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}
+
+# 移除文件夹
+rm -rf ${LOCAL_WECHAT_CONTAIN_PAY_ZIP}
+rm -rf ${LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP}
+
+# 创建空文件
 touch ${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/empty.swift
 echo "// This is a empty swift file" >>${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/empty.swift
 touch ${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}/empty.swift
@@ -146,12 +168,12 @@ Pod::Spec.new do |spec|
     spec.requires_arc           = true
     spec.static_framework       = true
     spec.swift_version          = '5.0'
-    spec.vendored_libraries 	= '${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.a'
+    spec.vendored_libraries     = '${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.a'
     spec.public_header_files    = '${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.h'
     spec.source_files           = '${LOCAL_WECHAT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.{h,swift}'
     spec.frameworks             = 'Security', 'UIKit', 'CoreGraphics', 'WebKit'
     spec.libraries              = 'z', 'c++', 'sqlite3.0'
-    spec.pod_target_xcconfig    = { 
+    spec.pod_target_xcconfig    = {
         'OTHER_LDFLAGS' => '-all_load',
         'VALID_ARCHS' => 'x86_64 armv7 arm64'
     }
@@ -184,12 +206,12 @@ Pod::Spec.new do |spec|
     spec.requires_arc           = true
     spec.static_framework       = true
     spec.swift_version          = '5.0'
-    spec.vendored_libraries 	= '${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.a'
+    spec.vendored_libraries     = '${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.a'
     spec.public_header_files    = '${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.h'
     spec.source_files           = '${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}/*.{h,swift}'
     spec.frameworks             = 'Security', 'UIKit', 'CoreGraphics', 'WebKit'
     spec.libraries              = 'z', 'c++', 'sqlite3.0'
-    spec.pod_target_xcconfig    = { 
+    spec.pod_target_xcconfig    = {
         'OTHER_LDFLAGS' => '-all_load',
         'VALID_ARCHS' => 'x86_64 armv7 arm64'
     }
