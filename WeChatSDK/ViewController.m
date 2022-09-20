@@ -6,8 +6,7 @@
 //
 
 #import "ViewController.h"
-#import <WechatOpenSDK/WXApi.h>
-@import WechatOpenSDK;
+#import "WXApi.h"
 
 @interface ViewController ()
 
@@ -20,6 +19,5 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [WXApi registerApp:@"" universalLink:@""];
 }
-
 
 @end

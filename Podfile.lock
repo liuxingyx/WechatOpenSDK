@@ -1,16 +1,16 @@
 PODS:
-  - WechatOpenSDK-Full (1.9.2)
+  - LXWechatOpenSDK_Pay (1.9.2)
 
 DEPENDENCIES:
-  - WechatOpenSDK-Full (from `WechatOpenSDK-Full.podspec`)
+  - LXWechatOpenSDK_Pay
 
-EXTERNAL SOURCES:
-  WechatOpenSDK-Full:
-    :path: WechatOpenSDK-Full.podspec
+SPEC REPOS:
+  trunk:
+    - LXWechatOpenSDK_Pay
 
 SPEC CHECKSUMS:
-  WechatOpenSDK-Full: aae010c9e0768e27320ded89273017aae60705f5
+  LXWechatOpenSDK_Pay: 7b4f56a2788f50eaeb6f09a524a4382b6e75ccfc
 
-PODFILE CHECKSUM: b65135ad9db25b83be5304e5d64b721aa665d2fc
+PODFILE CHECKSUM: 25a50d3d1880ac7d94716d11daceffc8e45be29d
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

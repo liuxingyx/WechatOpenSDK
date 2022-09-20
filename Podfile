@@ -1,11 +1,10 @@
 # Uncomment the next line to define a global platform for your project
-source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '12.0'
 target 'WeChatSDK' do
   # Comment the next line if you don't want to use dynamic frameworks
   use_frameworks!
 
   # Pods for WeChatSDK
-  pod 'WechatOpenSDK-Pay', :path => 'WechatOpenSDK-Pay.podspec'
-  #pod 'WechatOpenSDK-NoPay'
+  pod 'LXWechatOpenSDK_Pay'
+  #pod 'LXWechatOpenSDK_NoPay'
 end
