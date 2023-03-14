@@ -54,48 +54,46 @@ function getLocalPodVersion() {
         # echo -e "\n"
     fi
 }
-
+#old 1. iOS开发工具包<a href="http://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.6.zip">iOS开发工具包</a>（1.9.6版本，包含支付功能
+#new 1. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.2.zip">iOS开发工具包</a>（直接提供.a静态库文件的形式，2.0.2版本，包含支付功能）。</p> <p>2. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.2_NoPay.zip">iOS开发工具包</a>（直接提供.a静态库文件的形式，2.0.2版本，不包含支付功能）。</p> <p>3. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.2.zip">iOS开发工具包</a>（XCFramework的形式，2.0.2版本，包含支付功能）。</p> <p>4. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.2_NoPay.zip">iOS开发工具包</a>（XCFramework的形式，2.0.2版本，不包含支付功能）。</p>
 function getWechatProperties() {
     if [ -f "${LOCAL_WECHAT_DOWNLOAD_HTML_FILE}" ]; then
-        pattern1="1. iOS开发工具包<a href=\"[^<]*\">iOS.*，包含支付功能"
-        url1=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern1}")
-        url1="${url1#*\"}" # 从左向右截取第一个["]后的字符串
-        url1="${url1%\"*}" # 从右向左截取第一个["]前的字符串
-        echo "包含支付功能的url：${url1}"
-        WECHAT_CONTAIN_PAY_URL=${url1}
-        payzip="${url1#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
+        payUrlPattern="1. <a href=\"[^<]*\">"
+        pay=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${payUrlPattern}")
+        pay="${pay#*\"}" # 从左向右截取第一个["]后的字符串
+        pay="${pay%\"*}" # 从右向左截取第一个["]前的字符串
+#        pay="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.7.zip"
+        echo "包含支付功能的url：${pay}"
+        WECHAT_CONTAIN_PAY_URL=${pay}
+        payzip="${pay#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
         echo "包含支付功能的zip：${payzip}"
         LOCAL_WECHAT_CONTAIN_PAY_ZIP=${payzip}
         payzip="${payzip%.*}" # 从右向左截取第一个[.]前的字符串
         echo "包含支付功能的name：${payzip}"
         WECHAT_CONTAIN_PAY_NAME=${payzip}
+        
+        payVersion="${payzip#OpenSDK}" # 从左向右截取第一个[OpenSDK]后的字符串
+        echo "包含支付功能的版本号：${payVersion}"
+        WECHAT_CONTAIN_PAY_VERSION=${payVersion}
 
-        pattern2="2. iOS开发工具包<a href=\"[^<]*\">iOS.*，不包含支付功能"
-        url2=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern2}")
-        url2="${url2#*\"}" # 从左向右截取第一个["]后的字符串
-        url2="${url2%\"*}" # 从右向左截取第一个["]前的字符串
-        echo "不包含支付功能的url：${url2}"
-        WECHAT_NOT_CONTAIN_PAY_URL=${url2}
-        nopayzip="${url2#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
+        nopayUrlPattern="2. <a href=\"[^<]*\">"
+        nopay=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${nopayUrlPattern}")
+        nopay="${nopay#*\"}" # 从左向右截取第一个["]后的字符串
+        nopay="${nopay%\"*}" # 从右向左截取第一个["]前的字符串
+#        nopay="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.7_NoPay.zip"
+        echo "不包含支付功能的url：${nopay}"
+        WECHAT_NOT_CONTAIN_PAY_URL=${nopay}
+        nopayzip="${nopay#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
         echo "包含支付功能的zip：${nopayzip}"
         LOCAL_WECHAT_NOT_CONTAIN_PAY_ZIP=${nopayzip}
         nopayzip="${nopayzip%.*}" # 从右向左截取第一个[.]前的字符串
         echo "包含支付功能的name：${nopayzip}"
         WECHAT_NOT_CONTAIN_PAY_NAME=${nopayzip}
 
-        pattern3="iOS开发工具包</a>（[^<]*版本，包含支付功能）"
-        version1=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern3}")
-        version1="${version1#*\</a>（}" # 从左向右截取第一个[</a>（]后的字符串
-        version1="${version1%\版本*}"    # 从右向左截取第一个[版本]前的字符串
-        echo "包含支付功能的版本号：${version1}"
-        WECHAT_CONTAIN_PAY_VERSION=${version1}
-
-        pattern4="iOS开发工具包</a>（[^<]*版本，不包含支付功能）"
-        version2=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${pattern4}")
-        version2="${version2#*\</a>（}" # 从左向右截取第一个[</a>（]后的字符串
-        version2="${version2%\版本*}"    # 从右向左截取第一个[版本]前的字符串
-        echo "不包含支付功能的版本号：${version2}"
-        WECHAT_NOT_CONTAIN_PAY_VERSION=${version1}
+        nopayVersion="${nopayzip#OpenSDK}" # 从左向右截取第一个[OpenSDK]后的字符串
+        nopayVersion="${nopayVersion%_NoPay}"    # 从右向左截取第一个[_NoPay]前的字符串
+        echo "不包含支付功能的版本号：${nopayVersion}"
+        WECHAT_NOT_CONTAIN_PAY_VERSION=${nopayVersion}
 
         # echo -e "\n"
     else
