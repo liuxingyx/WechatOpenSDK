@@ -69,3 +69,6 @@ OC
 ## 说明
 - `pod`版本和微信官方版本保持一致，比如`pod`版本是`1.9.2`，表示当前使用的官方`SDK`版本也是`1.9.2`
 - 我只是一个搬运工，`pod`库的更新依赖于微信官方，即微信官方更新了`SDK`，我的`pod`库才会更新
+
+## License
+MIT © [liujunliuhong](https://github.com/liujunliuhong/WechatOpenSDK)

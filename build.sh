@@ -54,15 +54,24 @@ function getLocalPodVersion() {
         # echo -e "\n"
     fi
 }
-#old 1. iOS开发工具包<a href="http://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.6.zip">iOS开发工具包</a>（1.9.6版本，包含支付功能
-#new 1. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.2.zip">iOS开发工具包</a>（直接提供.a静态库文件的形式，2.0.2版本，包含支付功能）。</p> <p>2. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.2_NoPay.zip">iOS开发工具包</a>（直接提供.a静态库文件的形式，2.0.2版本，不包含支付功能）。</p> <p>3. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.2.zip">iOS开发工具包</a>（XCFramework的形式，2.0.2版本，包含支付功能）。</p> <p>4. <a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.2_NoPay.zip">iOS开发工具包</a>（XCFramework的形式，2.0.2版本，不包含支付功能）。</p>
+#<a href="http://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.6.zip">iOS开发工具包</a>（1.9.6版本，包含支付功能
+
+#<a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.4.zip">iOS开发工具包</a>
+#（直接提供.a静态库文件的形式，2.0.4版本，包含支付功能）。
+#<a href="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK2.0.4_NoPay.zip">iOS开发工具包</a>
+#（直接提供.a静态库文件的形式，2.0.4版本，不包含支付功能）。
+#<a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.4.zip">iOS开发工具包</a>
+#（XCFramework的形式，2.0.4版本，包含支付功能）。
+#<a href="https://dldir1.qq.com/WechatWebDev/opensdk/XCFramework/OpenSDK2.0.4_NoPay.zip">iOS开发工具包</a>
+#（XCFramework的形式，2.0.4版本，不包含支付功能）。
+
 function getWechatProperties() {
     if [ -f "${LOCAL_WECHAT_DOWNLOAD_HTML_FILE}" ]; then
-        payUrlPattern="1. <a href=\"[^<]*\">"
+#    pattern1="1. iOS开发工具包<a href=\"[^<]*\">iOS.*，包含支付功能"
+        payUrlPattern="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK[^<]*.zip.*静态库文件的形式，[^<]*版本，包含支付功能"
         pay=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${payUrlPattern}")
-        pay="${pay#*\"}" # 从左向右截取第一个["]后的字符串
+        #pay="${pay#*\"}" # 从左向右截取第一个["]后的字符串
         pay="${pay%\"*}" # 从右向左截取第一个["]前的字符串
-#        pay="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.7.zip"
         echo "包含支付功能的url：${pay}"
         WECHAT_CONTAIN_PAY_URL=${pay}
         payzip="${pay#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
@@ -76,11 +85,10 @@ function getWechatProperties() {
         echo "包含支付功能的版本号：${payVersion}"
         WECHAT_CONTAIN_PAY_VERSION=${payVersion}
 
-        nopayUrlPattern="2. <a href=\"[^<]*\">"
+        nopayUrlPattern="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK[^<]*_NoPay.zip.*静态库文件的形式，[^<]*版本，不包含支付功能"
         nopay=$(cat ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE} | grep -o -E "${nopayUrlPattern}")
-        nopay="${nopay#*\"}" # 从左向右截取第一个["]后的字符串
+        #nopay="${nopay#*\"}" # 从左向右截取第一个["]后的字符串
         nopay="${nopay%\"*}" # 从右向左截取第一个["]前的字符串
-#        nopay="https://dldir1.qq.com/WechatWebDev/opensdk/OpenSDK1.9.7_NoPay.zip"
         echo "不包含支付功能的url：${nopay}"
         WECHAT_NOT_CONTAIN_PAY_URL=${nopay}
         nopayzip="${nopay#*opensdk/}" # 从左向右截取第一个[opensdk/]后的字符串
@@ -117,7 +125,7 @@ rm -rf ${LOCAL_WECHAT_NOT_CONTAIN_PAY_UNZIP_DIRECTORY}
 rm -rf ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE}
 
 # 下载html
-curl ${WECHAT_DOWNLOAD_URL} >${LOCAL_WECHAT_DOWNLOAD_HTML_FILE}
+curl ${WECHAT_DOWNLOAD_URL} > ${LOCAL_WECHAT_DOWNLOAD_HTML_FILE}
 
 # 获取微信官方属性（sdk下载url，sdk版本）
 getWechatProperties

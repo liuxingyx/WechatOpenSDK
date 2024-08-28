@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
     spec.name                   = 'LXWechatOpenSDK_NoPay' # 不包含支付功能
-    spec.version                = '2.0.2' # 版本号和微信的保持一致
+    spec.version                = '2.0.4' # 版本号和微信的保持一致
     spec.homepage               = 'https://github.com/liuxingyx/WechatOpenSDK'
     spec.source                 = { :git => 'https://github.com/liuxingyx/WechatOpenSDK.git', :tag => spec.version }
     spec.summary                = 'WeChat SDK without payment function'
